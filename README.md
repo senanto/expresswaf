@@ -55,7 +55,7 @@ A regex + normalization (URL decode, HTML entity decode) based signature engine;
 - **HTTP Parameter Pollution**: repeated query parameters
 - **Security headers**: HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, removal of `X-Powered-By`
 
-## Bot detection — honest scope
+## Bot detection
 
 `analyzeBotSignals()` uses **HTTP-layer heuristics** such as User-Agent signatures (headless Chrome, Selenium, Puppeteer, Playwright, curl, python-requests, etc.), missing `Accept-Language`, and missing/inconsistent `Sec-Fetch-*`/client-hints. It also includes a cookie-based JS challenge (`ChallengeManager`) that solves a SHA-256 proof-of-work in the browser.
 
@@ -82,7 +82,7 @@ interface Plugin {
 
 `instance.bus` is an `EventEmitter`; you can listen to `threat`, `block`, `challenge`, `config:reload`, and `request:start` events — Slack/Discord/webhook/SIEM integrations are expected to be written as simple plugins attached to these events (e.g., `fetch(webhookUrl, ...)` inside `onThreat`). The package does not provide a ready-made HTTP client for these integrations; external service contracts (Slack webhook format, Elastic bulk API, etc.) change frequently, so they are left to you via hooks instead of being hard-coded.
 
-## Out of scope (honestly)
+## Out of scope
 
 The following are not architecturally incompatible with this package, but a real implementation requires external services/infrastructure and is not falsely presented here as "working":
 
