@@ -1,0 +1,24 @@
+mode: block
+riskThresholdBlock: 70
+riskThresholdChallenge: 40
+hotReload: true
+detectors:
+  sqlInjection: true
+  xss: true
+  commandInjection: true
+  noSqlInjection: true
+  pathTraversal: true
+  ssrf: true
+  prototypePollution: true
+  crlf: true
+  hpp: true
+headers:
+  hsts: true
+  csp: "default-src 'self'"
+  xFrameOptions: DENY
+  xContentTypeOptions: true
+  referrerPolicy: no-referrer
+botDetection:
+  enabled: true
+  blockHeadless: true
+  challengeSuspicious: true
