@@ -82,16 +82,6 @@ interface Plugin {
 
 `instance.bus` is an `EventEmitter`; you can listen to `threat`, `block`, `challenge`, `config:reload`, and `request:start` events — Slack/Discord/webhook/SIEM integrations are expected to be written as simple plugins attached to these events (e.g., `fetch(webhookUrl, ...)` inside `onThreat`). The package does not provide a ready-made HTTP client for these integrations; external service contracts (Slack webhook format, Elastic bulk API, etc.) change frequently, so they are left to you via hooks instead of being hard-coded.
 
-## Out of scope
-
-The following are not architecturally incompatible with this package, but a real implementation requires external services/infrastructure and is not falsely presented here as "working":
-
-- JA3/TLS fingerprint → requires access to the raw TLS layer (Nginx/Envoy/Node `tls` socket)
-- GeoIP / ASN / IP reputation → requires a licensed database like MaxMind GeoLite2 or a paid API
-- Real ML-based anomaly detection → requires training data and model serving; you can plug in your own model via the `Plugin.onRequest` hook
-- Cluster/worker_threads → this is an Express middleware; your application determines the process topology (each worker creates its own `Waf` instance alongside `cluster.fork()`; use a Redis store for shared state)
-- Fastify adapter → the `Waf` class is not tied to Express (only the `middleware()` method expects `req/res/next`); the same `DetectorEngine`/`RiskEngine` APIs can be reused in a Fastify `onRequest` hook, but a ready-made adapter is not packaged today
-
 ## Tests
 
 ```bash
