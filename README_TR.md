@@ -81,16 +81,6 @@ interface Plugin {
 
 `instance.bus` bir `EventEmitter`'dır; `threat`, `block`, `challenge`, `config:reload`, `request:start` olaylarını dinleyebilirsiniz — Slack/Discord/webhook/SIEM entegrasyonlarını bu olaylara bağlı basit bir plugin olarak yazmanız beklenir (ör. `onThreat` içinde `fetch(webhookUrl, ...)`). Paket bu entegrasyonların HTTP client'ını hazır vermez; dış servis sözleşmeleri (Slack webhook formatı, Elastic bulk API vb.) sık değiştiği için bunları sabit kod olarak gömmek yerine hook üzerinden size bırakılmıştır.
 
-## Kapsam dışı bırakılanlar
-
-Aşağıdakiler bu paketin mimarisiyle çelişmez, ancak gerçek bir implementasyon harici servis/altyapı gerektirir ve burada sahte biçimde "çalışıyormuş" gibi gösterilmemiştir:
-
-- JA3/TLS fingerprint → ham TLS katmanına (Nginx/Envoy/Node `tls` soketi) erişim gerektirir
-- GeoIP / ASN / IP reputation → MaxMind GeoLite2 gibi lisanslı bir veritabanı veya ücretli API gerektirir
-- Gerçek ML tabanlı anomali tespiti → eğitim verisi ve model sunumu gerektirir; `Plugin.onRequest` hook'u üzerinden kendi modelinizi bağlayabilirsiniz
-- Cluster/worker_threads → bu bir Express middleware'idir, süreç topolojisini uygulamanız belirler (`cluster.fork()` ile birlikte her worker kendi `Waf` örneğini oluşturur; paylaşılan durum için Redis store kullanın)
-- Fastify adaptörü → `Waf` sınıfı Express'e bağımlı değildir (sadece `middleware()` metodu `req/res/next` bekler); Fastify için `onRequest` hook'unda aynı `DetectorEngine`/`RiskEngine` API'leri yeniden kullanılabilir, ancak bugün hazır bir adaptör paketlenmemiştir
-
 ## Test
 
 ```bash
