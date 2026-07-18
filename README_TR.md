@@ -39,7 +39,7 @@ app.use('/api', instance.rateLimit({ windowMs: 60_000, max: 120, algorithm: 'tok
 
 Config; `ENV` değişkenleriyle de override edilebilir: `WAF_MODE`, `WAF_RISK_BLOCK`, `WAF_RISK_CHALLENGE`, `WAF_RATE_LIMIT_MAX`, `WAF_REDIS_URL`.
 
-## Gerçekten neyi tespit eder
+## Neyi tespit ediyor?
 
 Regex + normalizasyon (URL decode, HTML entity decode) tabanlı imza motoru; kural bazlı, dürüst bir yaklaşımdır — "AST tabanlı SQL ayrıştırma" ya da "gerçek ML anomali tespiti" gibi iddialar içermez:
 
@@ -54,7 +54,7 @@ Regex + normalizasyon (URL decode, HTML entity decode) tabanlı imza motoru; kur
 - **HTTP Parameter Pollution**: tekrarlanan query parametreleri
 - **Güvenlik başlıkları**: HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, `X-Powered-By` kaldırma
 
-## Bot tespiti — dürüst kapsam
+## Bot tespiti
 
 `analyzeBotSignals()` User-Agent imzaları (headless Chrome, Selenium, Puppeteer, Playwright, curl, python-requests vb.), eksik `Accept-Language`, eksik `Sec-Fetch-*`/client-hints tutarsızlığı gibi **HTTP katmanı heuristikleri** kullanır. Ayrıca cookie tabanlı ve tarayıcıda SHA-256 proof-of-work çözen bir JS challenge (`ChallengeManager`) içerir.
 
@@ -81,7 +81,7 @@ interface Plugin {
 
 `instance.bus` bir `EventEmitter`'dır; `threat`, `block`, `challenge`, `config:reload`, `request:start` olaylarını dinleyebilirsiniz — Slack/Discord/webhook/SIEM entegrasyonlarını bu olaylara bağlı basit bir plugin olarak yazmanız beklenir (ör. `onThreat` içinde `fetch(webhookUrl, ...)`). Paket bu entegrasyonların HTTP client'ını hazır vermez; dış servis sözleşmeleri (Slack webhook formatı, Elastic bulk API vb.) sık değiştiği için bunları sabit kod olarak gömmek yerine hook üzerinden size bırakılmıştır.
 
-## Kapsam dışı bırakılanlar (dürüstçe)
+## Kapsam dışı bırakılanlar
 
 Aşağıdakiler bu paketin mimarisiyle çelişmez, ancak gerçek bir implementasyon harici servis/altyapı gerektirir ve burada sahte biçimde "çalışıyormuş" gibi gösterilmemiştir:
 
